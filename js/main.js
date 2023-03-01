@@ -55,33 +55,40 @@ function createRandomIdGenerator(a, b) {
 
 const generatePhotoId = createRandomIdGenerator(1, 25);
 const generateId = createRandomIdGenerator(1, 25);
-const generateCommentsId = createRandomIdGenerator(1, 999);
+const generateCommentId = createRandomIdGenerator(1, 999);
 
-const createComments = function () {
-  return {
-    id: generateCommentsId(),
+const createComment = () => {
+  const getComment = {
+    id: generateCommentId(),
     avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
     message: getRandomArrayElement(MESSAGES),
     name: getRandomArrayElement(NAMES),
   };
+  return getComment;
 };
 
-const createDescriptionPhoto = function () {
-  return {
+const createPhotoDescription = () => {
+  const getPhotoDescription = {
     id: generateId(),
     url: `photos/${generatePhotoId()}.jpg`,
     description: getRandomArrayElement(DESCRIPTIONS),
     likes: getRandomInteger(15, 200),
-    comments: (Array.from(
-      { length: getRandomInteger(1, 16) },
-      createComments
-    )),
   };
+  return getPhotoDescription;
 };
 
-const arrayDescriptionPhoto = Array.from(
+const createComments = () => {
+  const getComments = { comments: (Array.from(
+    { length: getRandomInteger(1, 16) },
+    createComment
+  ))
+  };
+  return getComments;
+};
+
+const createPhotoDescriptions = Array.from(
   { length: 25 },
-  createDescriptionPhoto
+  createPhotoDescription, createComments
 );
 
-console.log(arrayDescriptionPhoto);
+createPhotoDescriptions();
