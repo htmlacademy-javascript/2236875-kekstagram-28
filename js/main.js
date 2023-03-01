@@ -1,3 +1,16 @@
+const MIN_COMMENTS = 1;
+const MAX_COMMENTS = 16;
+const MIN_LIKES = 15;
+const MAX_LIKES = 200;
+const MIN_PHOTO_ID = 1;
+const MAX_PHOTO_ID = 25;
+const MIN_ID = 1;
+const MAX_ID = 25;
+const MIN_COMMENT_ID = 1;
+const MAX_COMMET_ID = 999;
+const MIN_AVATAR = 1;
+const MAX_AVATAR = 6;
+
 const DESCRIPTIONS = [
   'Дома',
   'На работе',
@@ -53,40 +66,34 @@ function createRandomIdGenerator(a, b) {
   };
 }
 
-const generatePhotoId = createRandomIdGenerator(1, 25);
-const generateId = createRandomIdGenerator(1, 25);
-const generateCommentId = createRandomIdGenerator(1, 999);
+const generatePhotoId = createRandomIdGenerator(MIN_PHOTO_ID, MAX_PHOTO_ID);
+const generateId = createRandomIdGenerator(MIN_ID, MAX_ID);
+const generateCommentId = createRandomIdGenerator(MIN_COMMENT_ID, MAX_COMMET_ID);
 
 const createComment = () => {
-  const getComment = {
+  const comment = {
     id: generateCommentId(),
-    avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
+    avatar: `img/avatar-${getRandomInteger(MIN_AVATAR, MAX_AVATAR)}.svg`,
     message: getRandomArrayElement(MESSAGES),
     name: getRandomArrayElement(NAMES),
   };
-  return getComment;
+  return comment;
 };
 
-const createPhotoDescription = () => {
-  const getPhotoDescription = {
-    id: generateId(),
-    url: `photos/${generatePhotoId()}.jpg`,
-    description: getRandomArrayElement(DESCRIPTIONS),
-    likes: getRandomInteger(15, 200),
-  };
-  return getPhotoDescription;
-};
+const createComments = () => Array.from(
+  { length: getRandomInteger(MIN_COMMENTS, MAX_COMMENTS) },
+  createComment
+);
 
-const createComments = () => {
-  const getComments = { comments: (Array.from(
-    { length: getRandomInteger(1, 16) },
-    createComment
-  ))
-  };
-  return getComments;
-};
+const createPhotoDescription = () => ({
+  id: generateId(),
+  url: `photos/${generatePhotoId()}.jpg`,
+  description: getRandomArrayElement(DESCRIPTIONS),
+  likes: getRandomInteger(MIN_LIKES, MAX_LIKES),
+  comments: createComments(),
+});
 
-const createPhotoDescriptions = Array.from(
+const createPhotoDescriptions = () => Array.from(
   { length: 25 },
   createPhotoDescription, createComments
 );
