@@ -1,67 +1,96 @@
-// Функция для проверки длины строки.
+import {getRandomArrayElement} from './util.js';
+import {getRandomInteger} from './util.js';
 
-const checkStringLength = (str, length) => str.length <= length;
+const MIN_COMMENTS = 1;
+const MAX_COMMENTS = 16;
+const MIN_LIKES = 15;
+const MAX_LIKES = 200;
+const MIN_PHOTO_ID = 1;
+const MAX_PHOTO_ID = 25;
+const MIN_ID = 1;
+const MAX_ID = 25;
+const MIN_COMMENT_ID = 1;
+const MAX_COMMET_ID = 999;
+const MIN_AVATAR = 1;
+const MAX_AVATAR = 6;
 
-checkStringLength('проверяемая строка', 20);
-checkStringLength('проверяемая строка', 18);
-checkStringLength('проверяемая строка', 10);
+const DESCRIPTIONS = [
+  'Дома',
+  'На работе',
+  'На тренировке',
+  'На прогулке',
+  'На учёбе',
+];
 
+const NAMES = [
+  'Иван',
+  'Никита',
+  'Анастасия',
+  'Ольга',
+  'Дмитрий',
+  'Аркадий',
+  'Юлия',
+];
 
-// Функция для проверки, является ли строка палиндромом.
+const MESSAGES = [
+  'Всё отлично!',
+  'В целом всё неплохо. Но не всё.',
+  'Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.',
+  'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
+  'Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.',
+  'Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!',
+];
 
-const isPalindrom = (string) => {
-  const tempString = string.toLowerCase().replaceAll(' ', '');
-  let reverseString = '';
-  for (let i = tempString.length - 1; i >= 0; i--) {
-    reverseString += tempString.at(i);
-  }
-  return tempString === reverseString;
-};
+function createRandomIdGenerator(a, b) {
+  const previousValues = [];
 
-isPalindrom('abca');
-isPalindrom('дерево');
-isPalindrom('Анна');
-isPalindrom('А муза рада музе без ума да разума');
+  return function () {
+    let currentValue = getRandomInteger(a, b);
 
-
-// Функция, которая принимает строку, извлекает содержащиеся в ней цифры от 0 до 9 и возвращает их в виде целого положительного числа.
-
-const exctractNumber = (str) => {
-  let answer = '';
-  for (let i = 0; i < str.length; i++) {
-    if (Number(str[i]) || str[i] === '0') {
-      answer += str[i];
+    if (previousValues.length >= b - a + 1) {
+      return null;
     }
-  }
-  if (answer === '') {
-    return NaN;
-  }
-  return Number(answer);
+
+    while (previousValues.includes(currentValue)) {
+      currentValue = getRandomInteger(a, b);
+    }
+    previousValues.push(currentValue);
+    return currentValue;
+  };
+}
+
+const generatePhotoId = createRandomIdGenerator(MIN_PHOTO_ID, MAX_PHOTO_ID);
+const generateId = createRandomIdGenerator(MIN_ID, MAX_ID);
+const generateCommentId = createRandomIdGenerator(MIN_COMMENT_ID, MAX_COMMET_ID);
+
+const createComment = () => {
+  const comment = {
+    id: generateCommentId(),
+    avatar: `img/avatar-${getRandomInteger(MIN_AVATAR, MAX_AVATAR)}.svg`,
+    message: getRandomArrayElement(MESSAGES),
+    name: getRandomArrayElement(NAMES),
+  };
+  return comment;
 };
 
-exctractNumber('2023 год');
-exctractNumber('ECMAScript 2022');
-exctractNumber('1 кефир, 0.5 батона');
-exctractNumber('а я томат');
+const createComments = () => Array.from(
+  { length: getRandomInteger(MIN_COMMENTS, MAX_COMMENTS) },
+  createComment
+);
 
+const createPhotoDescription = () => ({
+  id: generateId(),
+  url: `photos/${generatePhotoId()}.jpg`,
+  description: getRandomArrayElement(DESCRIPTIONS),
+  likes: getRandomInteger(MIN_LIKES, MAX_LIKES),
+  comments: createComments(),
+});
 
-// Функция, которая принимает три параметра: исходную строку, минимальную длину и строку с добавочными символами — и возвращает исходную строку, дополненную указанными символами до заданной длины.
+const createPhotoDescriptions = () => Array.from(
+  { length: 25 },
+  createPhotoDescription, createComments
+);
 
-const padStart = (sourceStr, targetLength, padStr) => {
-  if (sourceStr.length >= targetLength) {
-    return sourceStr;
-  }
+export {createPhotoDescriptions};
 
-  let subStr = '';
-  while (subStr.length < targetLength) {
-    subStr += padStr;
-  }
-
-  return subStr.slice(0, targetLength - sourceStr.length) + sourceStr;
-};
-
-padStart('q', 4, 'we');
-padStart('qwerty', 4, '0');
-padStart('q', 4, 'werty');
-padStart('1', 4, '0');
-padStart('1', 2, '0');
+createPhotoDescriptions();
