@@ -1,4 +1,4 @@
-import {createArrayDescriptionsPhoto} from './functions.js';
+import {createPhotoDescriptions} from './functions.js';
 import './util.js';
 
-createArrayDescriptionsPhoto();
+createPhotoDescriptions();
