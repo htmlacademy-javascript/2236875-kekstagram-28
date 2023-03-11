@@ -93,4 +93,3 @@ const createPhotoDescriptions = () => Array.from(
 
 export {createPhotoDescriptions};
 
-createPhotoDescriptions();
