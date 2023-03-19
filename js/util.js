@@ -12,14 +12,6 @@ const getRandomArrayElement = (elements) =>
 
 export {getRandomArrayElement};
 
-const clearComments = (container) => {
-  while (container.firstChild) {
-    container.removeChild(container.firstChild);
-  }
-};
-
-export {clearComments};
-
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
 export {isEscapeKey};

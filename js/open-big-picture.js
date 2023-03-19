@@ -1,5 +1,4 @@
 import { picturesContainer } from './thumbnail.js';
-import { clearComments } from './util.js';
 import { isEscapeKey } from './util.js';
 
 const bigPictureModal = document.querySelector('.big-picture');
@@ -10,13 +9,9 @@ const commentsContainer = document.querySelector('.social__comments');
 const socialCaption = document.querySelector('.social__caption');
 const socialCommentCount = bigPictureModal.querySelector('.social__comment-count');
 const commentLoader = bigPictureModal.querySelector('.comments-loader');
-const body = document.querySelector('body');
 const bigPictureModalCancel = document.querySelector('.big-picture__cancel');
 
-const templateComment = document.querySelector('#comments').content;
-const comentRenderFragment = document.createDocumentFragment();
-
-clearComments(commentsContainer);
+const templateComment = document.querySelector('#comments').content.querySelector('.social__comment');
 
 const onDocumentKeydown = (evt) => {
   if (isEscapeKey(evt)) {
@@ -25,28 +20,35 @@ const onDocumentKeydown = (evt) => {
   }
 };
 
+const clearComments = (container) => {
+  while (container.firstChild) {
+    container.removeChild(container.firstChild);
+  }
+};
+
 function closeBigPictureModal () {
   bigPictureModal.classList.add('hidden');
-  body.classList.remove('modal-open');
+  document.body.classList.remove('modal-open');
   clearComments(commentsContainer);
 
   document.removeEventListener('keydown', onDocumentKeydown);
-
-  bigPictureModalCancel.removeEventListener('click', closeBigPictureModal);
 }
 
 function openUBigPictureModal () {
-  bigPictureModal.classList.remove('hidden');
   commentLoader.classList.add('hidden');
   socialCommentCount.classList.add('hidden');
-  body.classList.add('modal-open');
+  bigPictureModal.classList.remove('hidden');
+  document.body.classList.add('modal-open');
 
   bigPictureModalCancel.addEventListener('click', closeBigPictureModal);
 
   document.addEventListener('keydown', onDocumentKeydown);
 }
 
+clearComments(commentsContainer);
+
 const renderComents = (arrElem) => {
+  const comentRenderFragment = document.createDocumentFragment();
   arrElem.comments.forEach(({avatar, name, message}) => {
     const userComment = templateComment.cloneNode(true);
     userComment.querySelector('.social__picture').src = avatar;
@@ -66,8 +68,8 @@ const renderBigPhoto = (arr) => {
       commentsCount.textContent = currentDescription.comments.length;
       likesCount.textContent = currentDescription.likes;
       socialCaption.textContent = currentDescription.description;
-      openUBigPictureModal();
       renderComents(currentDescription);
+      openUBigPictureModal();
     }
   });
 };
