@@ -1,5 +1,6 @@
 import {getRandomArrayElement} from './util.js';
 import {getRandomInteger} from './util.js';
+import {idPhoto} from './util.js';
 
 const MIN_COMMENTS = 1;
 const MAX_COMMENTS = 16;
@@ -7,8 +8,6 @@ const MIN_LIKES = 15;
 const MAX_LIKES = 200;
 const MIN_PHOTO_ID = 1;
 const MAX_PHOTO_ID = 25;
-const MIN_ID = 1;
-const MAX_ID = 25;
 const MIN_COMMENT_ID = 1;
 const MAX_COMMET_ID = 999;
 const MIN_AVATAR = 1;
@@ -60,7 +59,6 @@ function createRandomIdGenerator(a, b) {
 }
 
 const generatePhotoId = createRandomIdGenerator(MIN_PHOTO_ID, MAX_PHOTO_ID);
-const generateId = createRandomIdGenerator(MIN_ID, MAX_ID);
 const generateCommentId = createRandomIdGenerator(MIN_COMMENT_ID, MAX_COMMET_ID);
 
 const createComment = () => {
@@ -79,7 +77,7 @@ const createComments = () => Array.from(
 );
 
 const createPhotoDescription = () => ({
-  id: generateId(),
+  id: idPhoto() - 1,
   url: `photos/${generatePhotoId()}.jpg`,
   description: getRandomArrayElement(DESCRIPTIONS),
   likes: getRandomInteger(MIN_LIKES, MAX_LIKES),
@@ -92,4 +90,3 @@ const createPhotoDescriptions = () => Array.from(
 );
 
 export {createPhotoDescriptions};
-

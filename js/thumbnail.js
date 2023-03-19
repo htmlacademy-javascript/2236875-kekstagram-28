@@ -1,13 +1,15 @@
 const thumbnailTemplate = document.querySelector('#picture').content;
-const pictureRenderingFragment = document.createDocumentFragment();
 const picturesContainer = document.querySelector('.pictures');
 
-const createMiniatures = (array) => {
-  array.forEach(({url, likes, comments}) => {
+const createMiniatures = (photos) => {
+  const pictureRenderingFragment = document.createDocumentFragment();
+  photos.forEach(({likes, comments, url, description, id}) => {
     const userPictureElement = thumbnailTemplate.cloneNode(true);
     userPictureElement.querySelector('.picture__likes').textContent = likes;
     userPictureElement.querySelector('.picture__comments').textContent = comments.length;
     userPictureElement.querySelector('.picture__img').src = url;
+    userPictureElement.querySelector('.picture__img').alt = description;
+    userPictureElement.querySelector('.picture').dataset.pictureId = id;
     pictureRenderingFragment.appendChild(userPictureElement);
   });
 
@@ -15,3 +17,4 @@ const createMiniatures = (array) => {
 };
 
 export {createMiniatures};
+export {picturesContainer};

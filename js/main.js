@@ -1,7 +1,6 @@
-import {createPhotoDescriptions} from './functions.js';
-import {createMiniatures} from './thumbnail.js';
-import './functions.js';
-import './util.js';
-import './thumbnail.js';
-
-createMiniatures(createPhotoDescriptions());
+import { createPhotoDescriptions } from './functions.js';
+import { createMiniatures } from './thumbnail.js';
+import { renderBigPhoto } from './open-big-picture.js';
+const pictures = createPhotoDescriptions();
+createMiniatures(pictures);
+renderBigPhoto(pictures);
