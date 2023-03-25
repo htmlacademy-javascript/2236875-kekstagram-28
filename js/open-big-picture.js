@@ -13,7 +13,6 @@ const templateComment = document.querySelector('#comments').content.querySelecto
 
 const COMMENT_IN_BLOCK = 5;
 let commentsShown = 0;
-
 const clearComments = (container) => {
   while (container.firstChild) {
     container.removeChild(container.firstChild);
