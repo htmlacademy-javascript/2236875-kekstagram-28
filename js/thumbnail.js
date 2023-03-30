@@ -1,20 +1,26 @@
-const thumbnailTemplate = document.querySelector('#picture').content;
-const picturesContainer = document.querySelector('.pictures');
+import {createPhotoDescriptions} from './functions.js';
+import {openBigPicture} from './open-big-picture.js';
 
-const createMiniatures = (photos) => {
-  const pictureRenderingFragment = document.createDocumentFragment();
-  photos.forEach(({likes, comments, url, description, id}) => {
-    const userPictureElement = thumbnailTemplate.cloneNode(true);
-    userPictureElement.querySelector('.picture__likes').textContent = likes;
-    userPictureElement.querySelector('.picture__comments').textContent = comments.length;
-    userPictureElement.querySelector('.picture__img').src = url;
-    userPictureElement.querySelector('.picture__img').alt = description;
-    userPictureElement.querySelector('.picture').dataset.pictureId = id;
-    pictureRenderingFragment.appendChild(userPictureElement);
+const pictures = createPhotoDescriptions();
+const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
+const container = document.querySelector('.pictures');
+
+const createMiniatures = (data) => {
+  const thumbnail = thumbnailTemplate.cloneNode(true);
+  thumbnail.querySelector('.picture__img').src = data.url;
+  thumbnail.querySelector('.picture__img').alt = data.description;
+  thumbnail.querySelector('.picture__comments').textContent = data.comments.length;
+  thumbnail.querySelector('.picture__likes').textContent = data.likes;
+
+  thumbnail.addEventListener('click', (event) => {
+    event.preventDefault();
+    openBigPicture(data);
   });
-
-  return picturesContainer.appendChild(pictureRenderingFragment);
+  return thumbnail;
 };
 
-export {createMiniatures};
-export {picturesContainer};
+const renderThumbnails = () => {
+  pictures.forEach((data) => container.append(createMiniatures(data)));
+};
+
+export {renderThumbnails};
