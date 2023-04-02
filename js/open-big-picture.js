@@ -51,8 +51,6 @@ const closeBigPicture = () => {
   bigPicture.classList.add('hidden');
   document.body.classList.remove('modal-open');
 
-  bigPictureCancel.removeEventListener('click', onBigPictureCloseClick);
-  commentLoader.removeEventListener('click', onSocialCommentsLoaderClick);
   document.removeEventListener('keydown', onDocumentKeydown);
   comments = [];
   commentsShown = 0;
@@ -65,10 +63,11 @@ const openBigPicture = (data) => {
   document.body.classList.add('modal-open');
   fillBigPicture(data);
   renderComments();
-  bigPictureCancel.addEventListener('click', onBigPictureCloseClick);
-  commentLoader.addEventListener('click', onSocialCommentsLoaderClick);
   document.addEventListener('keydown', onDocumentKeydown);
 };
+
+bigPictureCancel.addEventListener('click', onBigPictureCloseClick);
+commentLoader.addEventListener('click', onSocialCommentsLoaderClick);
 
 function onSocialCommentsLoaderClick (event) {
   event.preventDefault();
