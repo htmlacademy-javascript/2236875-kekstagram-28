@@ -54,15 +54,13 @@ const isValidTag = (tag) => VALID_SYMBOLS.test(tag);
 
 const hasValidCount = (tags) => tags.length <= MAX_HASHTAG_COUNT;
 
-const hasUniqueTags = (tags) => {
-  const lowerCaseTags = tags.map((tag) => tag.toLowerCase());
-  return lowerCaseTags.length === new Set(lowerCaseTags).size;
-};
+const hasUniqueTags = (tags) => tags.length === new Set(tags).size;
 
 const validateTags = (value) => {
   const tags = value
     .trim()
-    .split(' ')
+    .toLowerCase()
+    .split(/\s+/)
     .filter((tag) => tag.trim().length);
   return hasValidCount(tags) && hasUniqueTags(tags) && tags.every(isValidTag);
 };
