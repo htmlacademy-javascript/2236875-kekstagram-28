@@ -1,11 +1,13 @@
-import {createPhotoDescriptions} from './functions.js';
 import {openBigPicture} from './open-big-picture.js';
+import {getData} from './api.js';
+import {onGetFail} from './get-messages.js';
 
-const pictures = createPhotoDescriptions();
+const GET_URL = 'https://28.javascript.pages.academy/kekstagram/data';
+
 const thumbnailTemplate = document.querySelector('#picture').content.querySelector('.picture');
 const container = document.querySelector('.pictures');
 
-const createMiniatures = (data) => {
+const createThumbnail = (data) => {
   const thumbnail = thumbnailTemplate.cloneNode(true);
   thumbnail.querySelector('.picture__img').src = data.url;
   thumbnail.querySelector('.picture__img').alt = data.description;
@@ -19,8 +21,12 @@ const createMiniatures = (data) => {
   return thumbnail;
 };
 
-const renderThumbnails = () => {
-  pictures.forEach((data) => container.append(createMiniatures(data)));
+const renderThumbnails = (data) => {
+  data.forEach((item) => container.append(createThumbnail(item)));
 };
 
-export {renderThumbnails};
+const onGetSuccess = (data) => renderThumbnails(data);
+
+const getPicrutesData = () => getData(GET_URL, onGetSuccess, onGetFail);
+
+export {getPicrutesData};
