@@ -69,20 +69,20 @@ const openBigPicture = (data) => {
 bigPictureCancel.addEventListener('click', onBigPictureCloseClick);
 commentLoader.addEventListener('click', onSocialCommentsLoaderClick);
 
-function onSocialCommentsLoaderClick (event) {
-  event.preventDefault();
+function onSocialCommentsLoaderClick (evt) {
+  evt.preventDefault();
   renderComments();
 }
 
-function onDocumentKeydown (event) {
-  if (event.key === 'Escape' && !event.target.closest('.social__footer-text')) {
-    event.preventDefault();
+function onDocumentKeydown (evt) {
+  if (evt.key === 'Escape' && !evt.target.closest('.social__footer-text')) {
+    evt.preventDefault();
     closeBigPicture();
   }
 }
 
-function onBigPictureCloseClick (event) {
-  event.preventDefault();
+function onBigPictureCloseClick (evt) {
+  evt.preventDefault();
   closeBigPicture();
 }
 
