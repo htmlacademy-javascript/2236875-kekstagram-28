@@ -23,14 +23,13 @@ const rerenderThumbnails = (data, id) => {
   renderThumbnails(sortArray);
 };
 
-const rerenderTimeout = debounce((data, id) => rerenderThumbnails(data, id), RERENDER_DELAY);
+const rerenderTimeout = debounce(rerenderThumbnails, RERENDER_DELAY);
 
 const onImgFiltersClick = (evt, data) => {
   if (evt.target.closest('.img-filters__button') && !evt.target.closest('.img-filters__button--active')) {
     document.querySelector('.img-filters__button--active').classList.remove('img-filters__button--active');
     evt.target.classList.add('img-filters__button--active');
-    const id = evt.target.id;
-    rerenderTimeout(data, id);
+    rerenderTimeout(data, evt.target.id);
   }
 };
 
