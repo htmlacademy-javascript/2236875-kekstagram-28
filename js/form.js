@@ -18,17 +18,10 @@ const commentField = document.querySelector('.text__description');
 const submitButton = document.querySelector('.img-upload__submit');
 const imageElement = document.querySelector('.img-upload__preview img');
 
-const onSendSuccess = () => {
-  renderSuccessMessage();
-  closeModal();
-  submitButton.disabled = false;
-};
-
 const onSendFail = () => {
   renderFailMessage();
   submitButton.disabled = false;
 };
-
 
 const pristine = new Pristine(form, {
   classTo: 'img-upload__field-wrapper',
@@ -36,14 +29,13 @@ const pristine = new Pristine(form, {
   errorTextClass: 'img-upload__field-wrapper__error',
 });
 
-function openModal () {
+const openModal = () => {
   overlay.classList.remove('hidden');
   body.classList.add('modal-open');
   document.addEventListener('keydown', onDocumentKeydown);
+};
 
-}
-
-function closeModal () {
+const closeModal = () => {
   form.reset();
   resetScale();
   resetEffects();
@@ -51,7 +43,13 @@ function closeModal () {
   overlay.classList.add('hidden');
   body.classList.remove('modal-open');
   document.removeEventListener('keydown', onDocumentKeydown);
-}
+};
+
+const onSendSuccess = () => {
+  renderSuccessMessage();
+  closeModal();
+  submitButton.disabled = false;
+};
 
 const isTextFieldFocused = () =>
   document.activeElement === hashtagField ||
@@ -67,12 +65,12 @@ function onDocumentKeydown(evt) {
   }
 }
 
-const onCancelButtonClick = () => {
-  closeModal();
-};
+const onCancelButtonClick = () => closeModal();
 
 const onFileInputChange = () => {
   openModal();
+  const image = fileField.files[0];
+  imageElement.src = URL.createObjectURL(image);
 };
 
 const isValidTag = (tag) => VALID_SYMBOLS.test(tag);
@@ -104,14 +102,8 @@ const onFormSubmit = (evt) => {
   }
 };
 
-const onImageDownloadInput = () => {
-  const image = fileField.files[0];
-  imageElement.src = URL.createObjectURL(image);
-};
-
 const addFormAction = () => {
   fileField.addEventListener('change', onFileInputChange);
-  fileField.addEventListener('input', onImageDownloadInput);
   cancelButton.addEventListener('click', onCancelButtonClick);
   form.addEventListener('submit', onFormSubmit);
 };
