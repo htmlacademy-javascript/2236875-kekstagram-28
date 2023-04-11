@@ -1,4 +1,4 @@
-const EFFECTS = [
+const FILTERS = [
   {
     name: 'none',
     style: 'none',
@@ -48,7 +48,7 @@ const EFFECTS = [
     unit: '',
   }
 ];
-const DEFAULT_EFFECT = EFFECTS[0];
+const DEFAULT_EFFECT = FILTERS[0];
 let chosenEffect = DEFAULT_EFFECT;
 
 const imageElement = document.querySelector('.img-upload__preview img');
@@ -88,7 +88,7 @@ const onEffectsChange = (evt) => {
   if (!evt.target.classList.contains('effects__radio')) {
     return;
   }
-  chosenEffect = EFFECTS.find((effect) => effect.name === evt.target.value);
+  chosenEffect = FILTERS.find((effect) => effect.name === evt.target.value);
   imageElement.className = `effects__preview--${chosenEffect.name}`;
   updateSlider();
 };
