@@ -25,9 +25,9 @@ export {isEscapeKey};
 
 let serialNumber = 0;
 
-const idPhoto = () => {
+const generateIdPhoto = () => {
   serialNumber += 1;
   return serialNumber;
 };
 
-export {idPhoto};
+export {generateIdPhoto};
